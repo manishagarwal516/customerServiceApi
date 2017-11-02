@@ -1,0 +1,8 @@
+development:
+  database: customer_service
+  host: localhost
+  port: 5432
+  username: interact
+  password: 1nt3r4ct
+  timeout: 5000
+  reconnect: true
