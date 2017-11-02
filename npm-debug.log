@@ -1,32 +1,34 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
+1 verbose cli [ '/home/manish/.nvm/versions/node/v6.11.3/bin/node',
+1 verbose cli   '/home/manish/.nvm/versions/node/v6.11.3/bin/npm',
+1 verbose cli   'start' ]
 2 info using npm@3.10.10
-3 info using node@v6.9.5
+3 info using node@v6.11.3
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle customerserviceapi@0.0.0~prestart: customerserviceapi@0.0.0
 6 silly lifecycle customerserviceapi@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle customerserviceapi@0.0.0~start: customerserviceapi@0.0.0
 8 verbose lifecycle customerserviceapi@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle customerserviceapi@0.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/manish-lappy/projects/customerServiceApi/node_modules/.bin:/home/manish-lappy/bin:/home/manish-lappy/.local/bin:/home/manish-lappy/bin:/home/manish-lappy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/manish-lappy/Android/Sdk/tools:/home/manish-lappy/Android/Sdk/platform-tools
-10 verbose lifecycle customerserviceapi@0.0.0~start: CWD: /home/manish-lappy/projects/customerServiceApi
+9 verbose lifecycle customerserviceapi@0.0.0~start: PATH: /home/manish/.nvm/versions/node/v6.11.3/lib/node_modules/npm/bin/node-gyp-bin:/home/manish/contact-point/customerServiceApi/node_modules/.bin:/home/manish/.nvm/versions/node/v6.11.3/bin:/home/manish/.rvm/gems/ruby-2.0.0-p353/bin:/home/manish/.rvm/gems/ruby-2.0.0-p353@global/bin:/home/manish/.rvm/rubies/ruby-2.0.0-p353/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/manish/.rvm/bin:/home/manish/.rvm/bin
+10 verbose lifecycle customerserviceapi@0.0.0~start: CWD: /home/manish/contact-point/customerServiceApi
 11 silly lifecycle customerserviceapi@0.0.0~start: Args: [ '-c', 'node ./bin/www' ]
 12 silly lifecycle customerserviceapi@0.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle customerserviceapi@0.0.0~start: Failed to exec start script
 14 verbose stack Error: customerserviceapi@0.0.0 start: `node ./bin/www`
 14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:255:16)
+14 verbose stack     at EventEmitter.<anonymous> (/home/manish/.nvm/versions/node/v6.11.3/lib/node_modules/npm/lib/utils/lifecycle.js:255:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
-14 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at ChildProcess.<anonymous> (/home/manish/.nvm/versions/node/v6.11.3/lib/node_modules/npm/lib/utils/spawn.js:40:14)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at ChildProcess.emit (events.js:191:7)
-14 verbose stack     at maybeClose (internal/child_process.js:877:16)
-14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+14 verbose stack     at maybeClose (internal/child_process.js:920:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:230:5)
 15 verbose pkgid customerserviceapi@0.0.0
-16 verbose cwd /home/manish-lappy/projects/customerServiceApi
-17 error Linux 4.4.0-53-generic
-18 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
-19 error node v6.9.5
+16 verbose cwd /home/manish/contact-point/customerServiceApi
+17 error Linux 3.2.0-23-generic-pae
+18 error argv "/home/manish/.nvm/versions/node/v6.11.3/bin/node" "/home/manish/.nvm/versions/node/v6.11.3/bin/npm" "start"
+19 error node v6.11.3
 20 error npm  v3.10.10
 21 error code ELIFECYCLE
 22 error customerserviceapi@0.0.0 start: `node ./bin/www`

@@ -4,7 +4,7 @@ var yaml = require("js-yaml"),
 	pg = require('pg'),
 	types = require('pg').types,
 	envVar = process.env.NODE_ENV,
-	ctConString = "postgres://" + e[envVar].username + ":" + e[envVar].password + "@" + e[envVar].host + ":" + e[envVar].port + "/" + e[envVar].database,
+	ctConString = "postgres://" + e[envVar].username + ":" + e[envVar].password + "@" + e[envVar].host + ":" + e[envVar].port + "/" + e[envVar].database;
 
 var ctPool = {
 	query: function(qry,res){
@@ -108,6 +108,7 @@ function queryBuilder(type,data){
 					values += ",";
 				}
 			}
+			console.log(data);
 			qry = "INSERT INTO " + data.table + " (" + fields.join(',') + ") VALUES (" + values + ")";
 		break;
 
