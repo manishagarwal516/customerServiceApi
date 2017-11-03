@@ -54,11 +54,12 @@ CREATE TABLE public.shipment
 
 CREATE SEQUENCE shipment_shipment_id_seq START 1;
 
+CREATE TABLE public.user
+(
+  user_id integer NOT NULL DEFAULT nextval('user_user_id_seq'::regclass),
+  username character varying(100) NOT NULL,
+  password character varying(100) NOT NULL,
+  CONSTRAINT user_id PRIMARY KEY (user_id)
+);
 
-SELECT concat(cu.first_name, ' ', cu.last_name) AS customer_name ,
-(sh.qry * it.item_price) as order_price
-from customer cu
-JOIN shipment sh ON (sh.customer_id = cu.customer_id)
-JOIN item it ON (it.item_id = sh.item_id)
-where cu.customer_id = 2
-GROUP BY cu.customer_id, sh.shipment_id, it.item_id
+CREATE SEQUENCE user_user_id_seq START 1;

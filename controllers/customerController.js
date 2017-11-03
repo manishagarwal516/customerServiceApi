@@ -39,7 +39,7 @@ var customer = {
 
 	getCustomerOrders: function(req, res) {
 		console.log(req.params);
-		customerModel.getCustomerOrders(req.body, function(err, data){
+		customerModel.getCustomerOrders(req.params, function(err, data){
 			controller.responsify(err, data, function(response){
 				res(response);
 			});
