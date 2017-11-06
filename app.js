@@ -30,14 +30,33 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
-app.use('*', passport.authenticate('bearer', { session: false }));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request headers you wish to allow
+  // Set to true if you need the website to include cookies in the requests sent to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  // if (req.method === "OPTIONS") 
+  //   res.send(200);
+  // else 
+        next();
+});
+
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.sendStatus(200);
+});
+app.use('/oauth/token', oauth2.token);
+//app.use('*', passport.authenticate('bearer', { session: false }));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/orders', orders);
 app.use('/customers', customer);
 app.use('/state', state);
-app.use('/oauth/token', oauth2.token);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
