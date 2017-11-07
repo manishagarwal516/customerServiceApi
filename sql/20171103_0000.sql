@@ -54,7 +54,7 @@ CREATE TABLE public.shipment
 
 CREATE SEQUENCE shipment_shipment_id_seq START 1;
 
-CREATE TABLE public.user
+CREATE TABLE public.user_admin
 (
   user_id integer NOT NULL DEFAULT nextval('user_user_id_seq'::regclass),
   username character varying(100) NOT NULL,
@@ -63,3 +63,8 @@ CREATE TABLE public.user
 );
 
 CREATE SEQUENCE user_user_id_seq START 1;
+
+ALTER TABLE customer ADD COLUMN state_id integer NOT NULL DEFAULT 1
+ALTER TABLE customer ADD CONSTRAINT state_state_id_fkey FOREIGN KEY (state_id)
+  REFERENCES public.state (state_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE

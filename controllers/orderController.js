@@ -4,7 +4,7 @@ var	orderModel = require('../models/orderModel'),
 var order = {
 	getAction: function(req, res) {
 		console.log(req.query);
-		orderModel.getAction(req.body, function(err, data){
+		orderModel.getAction(req.query, function(err, data){
 			controller.responsify(err, data, function(response){
 				res(response);
 			});

@@ -1,21 +1,48 @@
 var	appModel = require('./appModel'),
-	_ = require('underscore');
+	_ = require('underscore'),
+	async = require('async');
 
 var order = {
 	getAction : function(data, res) {
-		appModel.ctPool.query(order.createQuery(data), function(err, result) {
-			var orders = []
-			_.map(_.groupBy(result, function(res){ return res.customer_id; }), function(val, key){
-				var tempHash = {
-					"id": val[0].customer_id,
-					"name": val[0].customer_name,
-					"orders": val
-				}
-				orders.push(tempHash);
-			})
-			console.log(orders);
-			res(err, orders);
-		});
+		var qryArray = order.createQuery(data);
+		async.waterfall([
+			function(callback) {
+				appModel.ctPool.query(qryArray[0], function(err, result) {
+					if(err)
+						callback(err);
+					else
+						callback(null, result);
+				});
+			},
+			function(data, callback) {
+				appModel.ctPool.query(qryArray[1], function(err, totalCount) {
+					console.log(totalCount);
+					if(err)
+						callback(err);
+					else{
+						var orders = [];
+						_.map(_.groupBy(data, function(res){ return res.customer_id; }), function(order, key){
+							var tempHash = {
+								"id": order[0].customer_id,
+								"name": order[0].customer_name,
+								"orders": order,
+								"order_total": _.reduce(order, function(memo, val){ return memo + val.item_price; }, 0)
+							}
+							orders.push(tempHash);
+						})
+						var orderData = {};
+						orderData.records = orders;
+						orderData.count = totalCount[0].count;
+						callback(null, orderData);
+					}
+				});
+			}
+		],function(err,result){
+			if(err)
+				res(null);
+			else
+				res(err, result);
+		});		
 	},
 
 	postAction : function(data, res) {
@@ -29,7 +56,7 @@ var order = {
 	},
 
 	createQuery : function(data){
-		var limit = 20, 
+		var limit = 5, 
 			where = '', 
 			offset = data.page ? (data.page - 1) * limit : 0;
 		var whereQry = data.filter && data.filter_key ? "WHERE " + where  : ""
@@ -40,7 +67,8 @@ var order = {
 			selectDataQry += "JOIN item it ON (it.item_id = sh.item_id) "
 			selectDataQry += "GROUP BY cu.customer_id, sh.shipment_id, it.item_id "
 			selectDataQry += " LIMIT " + limit + " offset " + offset;
-		return selectDataQry;
+		var orderCountQuery = "SELECT count(DISTINCT cu.customer_id) from customer cu JOIN shipment sh ON (sh.customer_id = cu.customer_id)";	
+		return [selectDataQry,orderCountQuery];
 	}
 }
 

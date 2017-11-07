@@ -1,11 +1,41 @@
 var	appModel = require('./appModel'),
-	_ = require('underscore');
+	_ = require('underscore'),
+	async = require('async');
 
 var customer = {
 	getAction : function(data, res) {
-		appModel.ctPool.query(customer.createQuery(data), function(err, result) {
-			res(err, result);
-		});
+		var qryArray = customer.createQuery(data);
+		async.waterfall([
+			function(callback) {
+				appModel.ctPool.query(qryArray[0], function(err, result) {
+					if(err)
+						callback(err);
+					else
+						callback(null, result);
+				});
+			},
+			function(data, callback) {
+				appModel.ctPool.query(qryArray[1], function(err, totalCount) {
+					console.log(totalCount);
+					if(err)
+						callback(err);
+					else{
+						var customerData = {};
+						customerData.records = data;
+						customerData.count = totalCount[0].count;
+						callback(null, customerData);
+					}
+				});
+			}
+		],function(err,result){
+			if(err)
+				res(null);
+			else
+				res(err, result);
+		});		
+		// appModel.ctPool.query(customer.createQuery(data), function(err, result) {
+		// 	res(err, result);
+		// });
 	},
 
 	postAction : function(data, res) {
@@ -30,7 +60,9 @@ var customer = {
 	},
 
 	getCustomerDetail : function(data, res) {
-		var selectDataQry = "SELECT * from customer where customer_id ="+ data.id;
+		var selectDataQry = "SELECT customer.*, st.name as state_name from customer "
+		selectDataQry += "JOIN state st ON (st.state_id = customer.state_id)"
+		selectDataQry += "where customer_id ="+ data.id;
 		appModel.ctPool.query(selectDataQry, function(err, result) {
 			res(err, result);
 		});
@@ -48,11 +80,12 @@ var customer = {
 			if(err) 
 				return res(err);
 			var orders = [];
-			_.map(_.groupBy(result, function(res){ return res.customer_id; }), function(val, key){
+			_.map(_.groupBy(result, function(res){ return res.customer_id; }), function(customerOrder, key){
 				var tempHash = {
-					"id": val[0].customer_id,
-					"name": val[0].customer_name,
-					"orders": val
+					"id": customerOrder[0].customer_id,
+					"name": customerOrder[0].customer_name,
+					"orders": customerOrder,
+					"order_total": _.reduce(customerOrder, function(memo, order){ return memo + order.item_price; }, 0)
 				}
 				orders.push(tempHash);
 			})
@@ -61,19 +94,22 @@ var customer = {
 	},
 
 	createQuery : function(data){
-		var limit = 20, 
+		var limit = 5, 
 			where = '', 
 			offset = data.page ? (data.page - 1) * limit : 0;
 		_.each(filter_keys[data.filter_key], function(value, index){
 			where +=  value + " ILIKE '%" + data.filter + "%' " + (index === (filter_keys[data.filter_key].length - 1) ? "" : "OR ");
 		})
 		var whereQry = data.filter && data.filter_key ? "WHERE " + where  : ""
-		var selectDataQry = "SELECT *  from customer "+ whereQry +" LIMIT " + limit + " offset " + offset;
-		return selectDataQry;
+		var selectDataQry = "SELECT customer.*, st.name as state_name from customer "
+		selectDataQry += "JOIN state st ON (st.state_id = customer.state_id)"
+		selectDataQry += whereQry +" LIMIT " + limit + " offset " + offset;
+		var totalCountQuery = "SELECT count(*) from customer "+ whereQry;
+		return [selectDataQry, totalCountQuery];
 	}
 
 }
 var filter_keys = {
-	customer_name: ["first_name","last_name"]
+	customer_name: ["customer.first_name","customer.last_name"]
 }
 module.exports = customer 
